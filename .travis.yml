@@ -1,0 +1,23 @@
+dist: xenial
+language: scala
+
+jdk:
+  - openjdk8
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot
+    - $HOME/.coursier
+
+install:
+  - pip install --user codecov
+
+script:
+  - sbt +clean +coverage +test +scalafmtCheck +test:scalafmtCheck scalafmtSbtCheck &&
+    sbt +coverageAggregate &&
+    codecov;
+
+  # See http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
+  # Tricks to avoid unnecessary cache updates
+  - find $HOME/.sbt -name "*.lock" | xargs rm

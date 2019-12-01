@@ -1,0 +1,3 @@
+org.typelevel.simulacrum.fix.AddImplicitNotFound
+org.typelevel.simulacrum.fix.AddSerializable
+org.typelevel.simulacrum.fix.TypeClassSupport
