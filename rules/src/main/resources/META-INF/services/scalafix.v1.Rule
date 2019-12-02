@@ -1,3 +1,6 @@
 org.typelevel.simulacrum.fix.AddImplicitNotFound
 org.typelevel.simulacrum.fix.AddSerializable
+org.typelevel.simulacrum.fix.ExpandPolymorphicLambdas
+org.typelevel.simulacrum.fix.ExpandTypeLambdas
+org.typelevel.simulacrum.fix.ParenthesizeLambdaParamWithType
 org.typelevel.simulacrum.fix.TypeClassSupport

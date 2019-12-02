@@ -1,7 +1,5 @@
 /*
-rules = [
-  TypeClassSupport
-]
+rule = TypeClassSupport
  */
 package cats
 
