@@ -10,7 +10,7 @@ case class TypeClass(
   companion: Option[Tree],
   name: String,
   typeParamName: String,
-  characterizedKind: List[TypeClass.Variance],
+  characterizedKind: List[Variance],
   parents: List[String],
   excludeParents: List[String],
   generateAllOps: Boolean
@@ -108,13 +108,5 @@ object TypeClass {
 
   case class TypeParamsError(position: Position) extends Diagnostic {
     def message: String = "Type class trait should have a single type parameter"
-  }
-
-  sealed trait Variance
-
-  object Variance {
-    case object Invariant extends Variance
-    case object Covariant extends Variance
-    case object Contravariant extends Variance
   }
 }
