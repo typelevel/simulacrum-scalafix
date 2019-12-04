@@ -7,6 +7,8 @@ This project is an experiment in rewriting Typelevel [Simulacrum][simulacrum] as
 [Scalafix][scalafix] rules. It's currently a rough proof-of-concept, but it is able to replace
 Simulacrum in the [Cats][cats] repository without breaking any tests or binary-compatibility checks.
 
+Please see [this Cats issue](https://github.com/typelevel/cats/issues/3192) for discussion about this experiment.
+
 ## Simulacrum rules
 
 Simulacrum 1's `@typeclass` macro annotation adds three kinds of boilerplate, which this project
