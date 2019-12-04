@@ -14,7 +14,7 @@ factors into three Scalafix rules:
 
 * `AddSerializable`: This rule adds `extends Serializable` to the root type classes in a type class hierarchy.
 * `AddImplicitNotFound`: This rule adds custom `@implicitNotFound` annotations for type classes.
-* `TypeClassSupport`: This rule converts methods on the type class to syntax methods in `Ops` traits.
+* `TypeClassSupport`: This rule adds a summoner method and syntax method support to the type class companion object.
 
 This repo currently includes a few miscellaneous Scalafix rules that may be useful for experimenting
 with Dotty cross-compilation:
