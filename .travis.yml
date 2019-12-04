@@ -1,6 +1,9 @@
 dist: xenial
 language: scala
 
+scala:
+  - 2.12.10
+
 jdk:
   - openjdk8
 
@@ -14,8 +17,7 @@ install:
   - pip install --user codecov
 
 script:
-  - sbt +clean +coverage +test +scalafmtCheck +test:scalafmtCheck scalafmtSbtCheck &&
-    sbt +coverageAggregate &&
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalafmtCheck test:scalafmtCheck scalafmtSbtCheck &&
     codecov;
 
   # See http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
