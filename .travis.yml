@@ -18,6 +18,7 @@ install:
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test scalafmtCheck test:scalafmtCheck scalafmtSbtCheck &&
+    sbt coverageAggregate &&
     codecov;
 
   # See http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
