@@ -118,6 +118,7 @@ trait ContravariantSemigroupal[F[_]] extends Serializable { self =>
 }
 
 object ContravariantSemigroupal {
+
   /****************************************************************************
    * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
    ****************************************************************************/

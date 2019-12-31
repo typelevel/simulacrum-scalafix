@@ -46,6 +46,7 @@ trait ContravariantSemigroupal[F[_]] { self =>
 }
 
 object ContravariantSemigroupal {
+
   /****************************************************************************
    * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
    ****************************************************************************/
