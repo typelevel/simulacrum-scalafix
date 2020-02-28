@@ -102,6 +102,11 @@ You can add Dotty cross-building with a few additional steps:
    ```
    These modules should compile without errors (the other laws modules and cats-free will currently fail).
 
+## Community
+
+People are expected to follow the [Scala Code of Conduct][code-of-conduct] on GitHub and in any
+other project channels.
+
 ## License
 
 This experimental code is licensed under the **[Apache License, Version 2.0][apache]**
