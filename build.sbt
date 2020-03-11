@@ -74,7 +74,7 @@ lazy val annotation = crossProject(JSPlatform, JVMPlatform)
   .settings(allSettings)
   .settings(
     crossScalaVersions := Seq(scalaVersion.value, "2.13.1"),
-    moduleName := "simulacrum-annotation"
+    moduleName := "simulacrum-scalafix-annotations"
   )
 
 lazy val annotationJVM = annotation.jvm
@@ -84,7 +84,7 @@ lazy val rules = project
   .settings(allSettings)
   .settings(
     crossScalaVersions := Seq(scalaVersion.value),
-    moduleName := "simulacrum-fix",
+    moduleName := "simulacrum-scalafix",
     libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion,
     scalacOptions += "-Ywarn-unused-import"
   )
