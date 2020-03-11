@@ -38,9 +38,9 @@ import simulacrum.typeclass
 }
 
 object Alternative extends AlternativeFunctions {
-  /****************************************************************************
-   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
-   ****************************************************************************/
+  /****************************************************************************/
+  /* THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      */
+  /****************************************************************************/
 
   /**
    * Summon an instance of [[Alternative]] for `F`.
@@ -74,9 +74,9 @@ object Alternative extends AlternativeFunctions {
     }
   }
 
-  /****************************************************************************
-   * END OF SIMULACRUM-MANAGED CODE                                           *
-   ****************************************************************************/
+  /****************************************************************************/
+  /* END OF SIMULACRUM-MANAGED CODE                                           */
+  /****************************************************************************/
 
 }
 
