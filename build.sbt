@@ -114,7 +114,7 @@ lazy val tests = project
 lazy val publishSettings = Seq(
   releaseCrossBuild := true,
   releasePublishArtifactsAction := PgpKeys.publishSigned.value,
-  homepage := Some(url("https://github.com/travisbrown/simulacrum-scalafix")),
+  homepage := Some(url("https://github.com/typelevel/simulacrum-scalafix")),
   licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   publishMavenStyle := true,
   publishArtifact in Test := false,
@@ -131,8 +131,8 @@ lazy val publishSettings = Seq(
   autoAPIMappings := true,
   scmInfo := Some(
     ScmInfo(
-      url("https://github.com/travisbrown/simulacrum-scalafix"),
-      "scm:git:git@github.com:travisbrown/simulacrum-scalafix.git"
+      url("https://github.com/typelevel/simulacrum-scalafix"),
+      "scm:git:git@github.com:typelevel/simulacrum-scalafix.git"
     )
   ),
   developers := List(
