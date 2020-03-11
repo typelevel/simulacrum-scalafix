@@ -39,7 +39,7 @@ import simulacrum.typeclass
 
 object Alternative extends AlternativeFunctions {
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -73,6 +73,11 @@ object Alternative extends AlternativeFunctions {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }
 
 trait AlternativeFunctions

@@ -16,7 +16,7 @@ object One {
     new One[A] { lazy val one: A = a }
 
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -50,4 +50,9 @@ object One {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }

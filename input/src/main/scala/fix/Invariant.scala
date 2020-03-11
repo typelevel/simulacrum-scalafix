@@ -47,7 +47,12 @@ trait ContravariantSemigroupal[F[_]] { self => }
 object ContravariantSemigroupal {
 
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
-  val extra = 1
+  val oldStuffThatShouldBeReplaced = ()
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+  val thisShouldBePreserved = ()
 }
