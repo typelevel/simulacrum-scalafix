@@ -41,7 +41,7 @@ trait Apply[F[_]] extends InvariantSemigroupal[F] with ApplyArityFunctions[F] { 
 
 object Apply {
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -79,6 +79,11 @@ object Apply {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }
 
 @implicitNotFound("Could not find an instance of FlatMap for ${F}")
@@ -108,7 +113,7 @@ trait FlatMap[F[_]] extends Apply[F] {
 
 object FlatMap {
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -145,6 +150,11 @@ object FlatMap {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }
 
 trait ApplyArityFunctions[F[_]] {

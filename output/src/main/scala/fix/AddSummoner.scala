@@ -10,7 +10,7 @@ trait MissingCompanionAndSummoner[F[_]]
 
 object MissingCompanionAndSummoner {
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -43,6 +43,11 @@ object MissingCompanionAndSummoner {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }
 
 /**
@@ -54,7 +59,7 @@ object MissingSummoner {
   def other: String = ""
 
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -87,4 +92,9 @@ object MissingSummoner {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }

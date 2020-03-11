@@ -10,11 +10,18 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
 
   def banner: String =
     """|  /****************************************************************************
-       |   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+       |   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
+       |   ****************************************************************************/
+       |""".stripMargin
+
+  def footer: String =
+    """|  /****************************************************************************
+       |   * END OF SIMULACRUM-MANAGED CODE                                           *
        |   ****************************************************************************/
        |""".stripMargin
 
   def isBanner(comment: String): Boolean = comment == banner.drop(4).dropRight(3)
+  def isFooter(comment: String): Boolean = comment == footer.drop(4).dropRight(3)
 
   def isValidOpsMethod(mods: List[Mod]): Boolean = mods.forall {
     case Mod.Private(_)   => false
@@ -285,6 +292,8 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
                     |object ${typeClass.name} {
                     |$banner
                     |$code
+                    |
+                    |$footer
                     |}""".stripMargin
 
         Patch.addRight(typeClass.tree.merge, companionString)
@@ -294,18 +303,22 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
           case Token.Comment(comment) => isBanner(comment)
           case _                      => false
         }
+        val footerIndex = currentCompanion.tokens.indexWhere {
+          case Token.Comment(comment) => isFooter(comment)
+          case _                      => false
+        }
 
-        if (bannerIndex < 0) {
+        if (bannerIndex < 0 || footerIndex < 0) {
           currentCompanion.tokens.last match {
-            case brace @ Token.RightBrace() => Patch.addLeft(brace, s"\n$banner\n$code\n")
-            case other                      => Patch.addRight(other, s" {\n$banner\n$code\n}")
+            case brace @ Token.RightBrace() => Patch.addLeft(brace, s"\n$banner\n$code\n\n$footer\n")
+            case other                      => Patch.addRight(other, s" {\n$banner\n$code\n\n$footer\n}")
           }
         } else {
-          Patch.addRight(
-            currentCompanion.tokens.apply(bannerIndex - 1),
-            s"${banner.dropWhile(_ == ' ')}\n$code\n}\n"
-          ) +
-            Patch.removeTokens(currentCompanion.tokens.drop(bannerIndex))
+          Patch.removeTokens(currentCompanion.tokens.slice(bannerIndex, footerIndex + 1)) +
+            Patch.addRight(
+              currentCompanion.tokens.apply(bannerIndex - 1),
+              s"${banner.dropWhile(_ == ' ')}\n$code\n\n$footer"
+            )
         }
     }
   }

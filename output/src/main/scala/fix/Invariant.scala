@@ -29,7 +29,7 @@ trait Invariant[F[_]] extends Serializable { self =>
 
 object Invariant {
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -63,6 +63,11 @@ object Invariant {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }
 
 @implicitNotFound("Could not find an instance of InvariantSemigroupal for ${F}")
@@ -74,7 +79,7 @@ trait InvariantSemigroupal[F[_]] extends Invariant[F] { self =>
 
 object InvariantSemigroupal {
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -110,6 +115,11 @@ object InvariantSemigroupal {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
 }
 
 @implicitNotFound("Could not find an instance of ContravariantSemigroupal for ${F}")
@@ -119,7 +129,7 @@ trait ContravariantSemigroupal[F[_]] extends Serializable { self => }
 object ContravariantSemigroupal {
 
   /****************************************************************************
-   * THE REST OF THIS OBJECT IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!! *
+   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
    ****************************************************************************/
 
   /**
@@ -152,4 +162,10 @@ object ContravariantSemigroupal {
       val typeClassInstance: TypeClassType = tc
     }
   }
+
+  /****************************************************************************
+   * END OF SIMULACRUM-MANAGED CODE                                           *
+   ****************************************************************************/
+
+  val thisShouldBePreserved = ()
 }
