@@ -2,6 +2,7 @@
 
 [![Build status](https://img.shields.io/travis/typelevel/simulacrum-scalafix/master.svg)](https://travis-ci.org/typelevel/simulacrum-scalafix)
 [![Coverage status](https://img.shields.io/codecov/c/github/typelevel/simulacrum-scalafix/master.svg)](https://codecov.io/github/typelevel/simulacrum-scalafix)
+[![Maven Central](https://img.shields.io/maven-central/v/org.typelevel/simulacrum-scalafix-annotations_2.13.svg)](https://maven-badges.herokuapp.com/maven-central/org.typelevel/simulacrum-scalafix-annotations_2.13)
 
 This project began as an experiment in rewriting Typelevel [Simulacrum][simulacrum] as a set of
 [Scalafix][scalafix] rules. It's currently still a proof-of-concept, but it is able to replace
