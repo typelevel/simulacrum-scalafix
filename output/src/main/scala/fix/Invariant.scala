@@ -114,8 +114,7 @@ object InvariantSemigroupal {
 
 @implicitNotFound("Could not find an instance of ContravariantSemigroupal for ${F}")
 @typeclass
-trait ContravariantSemigroupal[F[_]] extends Serializable { self =>
-}
+trait ContravariantSemigroupal[F[_]] extends Serializable { self => }
 
 object ContravariantSemigroupal {
 

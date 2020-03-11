@@ -42,8 +42,7 @@ trait InvariantSemigroupal[F[_]] extends Invariant[F] { self =>
 }
 
 @typeclass
-trait ContravariantSemigroupal[F[_]] { self =>
-}
+trait ContravariantSemigroupal[F[_]] { self => }
 
 object ContravariantSemigroupal {
 
