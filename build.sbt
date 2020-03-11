@@ -22,7 +22,7 @@ def priorTo2_13(scalaVersion: String): Boolean =
     case _                              => false
   }
 
-val baseSettings = Seq(
+lazy val baseSettings = Seq(
   scalaVersion := "2.12.10",
   addCompilerPlugin(scalafixSemanticdb),
   scalacOptions ++= compilerOptions,
@@ -47,7 +47,7 @@ val baseSettings = Seq(
   coverageHighlighting := true
 )
 
-val allSettings = baseSettings ++ publishSettings
+lazy val allSettings = baseSettings ++ publishSettings
 
 val testSettings = Seq(
   crossScalaVersions := Seq(scalaVersion.value),
@@ -60,11 +60,7 @@ lazy val V = _root_.scalafix.sbt.BuildInfo
 
 lazy val root = project
   .in(file("."))
-  .settings(allSettings)
-  .settings(
-    crossScalaVersions := Nil,
-    skip in publish := true
-  )
+  .settings(allSettings ++ noPublishSettings)
   .aggregate(annotationJVM, annotationJS, rules, input, output, tests)
 
 lazy val annotation = crossProject(JSPlatform, JVMPlatform)
@@ -114,9 +110,16 @@ lazy val tests = project
   .dependsOn(rules)
   .enablePlugins(ScalafixTestkitPlugin)
 
+lazy val noPublishSettings = Seq(
+  publish := {},
+  publishLocal := {},
+  publishArtifact := false
+)
+
 lazy val publishSettings = Seq(
   releaseCrossBuild := true,
   releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+  releaseVcsSign := true,
   homepage := Some(url("https://github.com/typelevel/simulacrum-scalafix")),
   licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   publishMavenStyle := true,
