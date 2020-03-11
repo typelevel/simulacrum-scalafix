@@ -9,19 +9,23 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
   override def isLinter: Boolean = false
 
   def banner: String =
-    """|  /****************************************************************************
-       |   * THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      *
-       |   ****************************************************************************/
+    """|  /****************************************************************************/
+       |  /* THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      */
+       |  /****************************************************************************/
        |""".stripMargin
 
   def footer: String =
-    """|  /****************************************************************************
-       |   * END OF SIMULACRUM-MANAGED CODE                                           *
-       |   ****************************************************************************/
+    """|  /****************************************************************************/
+       |  /* END OF SIMULACRUM-MANAGED CODE                                           */
+       |  /****************************************************************************/
        |""".stripMargin
 
-  def isBanner(comment: String): Boolean = comment == banner.drop(4).dropRight(3)
-  def isFooter(comment: String): Boolean = comment == footer.drop(4).dropRight(3)
+  private def getComments(input: String): (String, String, String) =
+    input.split("\n") match {
+      case Array(i0, i1, i2) => (i0.drop(4).dropRight(2), i1.drop(4).dropRight(2), i2.drop(4).dropRight(2))
+    }
+  def isBanner(c0: String, c1: String, c2: String): Boolean = (c0, c1, c2) == getComments(banner)
+  def isFooter(c0: String, c1: String, c2: String): Boolean = (c0, c1, c2) == getComments(footer)
 
   def isValidOpsMethod(mods: List[Mod]): Boolean = mods.forall {
     case Mod.Private(_)   => false
@@ -298,14 +302,34 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
 
         Patch.addRight(typeClass.tree.merge, companionString)
       case Some(currentCompanion) =>
-        // Working around scala.meta #1913 (bug in `span`).
-        val bannerIndex = currentCompanion.tokens.indexWhere {
-          case Token.Comment(comment) => isBanner(comment)
-          case _                      => false
+        val tokens = currentCompanion.tokens.toList
+
+        object ThreeComments {
+          def unapply(tokens: List[Token]): Option[(String, String, String)] = tokens match {
+            case List(
+                Token.Comment(c0),
+                Token.LF(),
+                Token.Space(),
+                Token.Space(),
+                Token.Comment(c1),
+                Token.LF(),
+                Token.Space(),
+                Token.Space(),
+                Token.Comment(c2)
+                ) =>
+              Some((c0, c1, c2))
+            case _ => None
+          }
         }
-        val footerIndex = currentCompanion.tokens.indexWhere {
-          case Token.Comment(comment) => isFooter(comment)
-          case _                      => false
+
+        // Working around scala.meta #1913 (bug in `span`).
+        val bannerIndex = tokens.sliding(9).indexWhere {
+          case ThreeComments(c0, c1, c2) => isBanner(c0, c1, c2)
+          case _                         => false
+        }
+        val footerIndex = tokens.sliding(9).indexWhere {
+          case ThreeComments(c0, c1, c2) => isFooter(c0, c1, c2)
+          case _                         => false
         }
 
         if (bannerIndex < 0 || footerIndex < 0) {
@@ -314,7 +338,7 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
             case other                      => Patch.addRight(other, s" {\n$banner\n$code\n\n$footer\n}")
           }
         } else {
-          Patch.removeTokens(currentCompanion.tokens.slice(bannerIndex, footerIndex + 1)) +
+          Patch.removeTokens(tokens.slice(bannerIndex, footerIndex + 9)) +
             Patch.addRight(
               currentCompanion.tokens.apply(bannerIndex - 1),
               s"${banner.dropWhile(_ == ' ')}\n$code\n\n$footer"
