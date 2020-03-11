@@ -1,7 +1,7 @@
 # Simulacrum Scalafix
 
-[![Build status](https://img.shields.io/travis/travisbrown/simulacrum-scalafix/master.svg)](https://travis-ci.org/travisbrown/simulacrum-scalafix)
-[![Coverage status](https://img.shields.io/codecov/c/github/travisbrown/simulacrum-scalafix/master.svg)](https://codecov.io/github/travisbrown/simulacrum-scalafix)
+[![Build status](https://img.shields.io/travis/typelevel/simulacrum-scalafix/master.svg)](https://travis-ci.org/typelevel/simulacrum-scalafix)
+[![Coverage status](https://img.shields.io/codecov/c/github/typelevel/simulacrum-scalafix/master.svg)](https://codecov.io/github/typelevel/simulacrum-scalafix)
 
 This project began as an experiment in rewriting Typelevel [Simulacrum][simulacrum] as a set of
 [Scalafix][scalafix] rules. It's currently still a proof-of-concept, but it is able to replace
