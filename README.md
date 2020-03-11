@@ -50,7 +50,7 @@ It's not currently possible to build Cats with [Dotty][dotty] because Simulacrum
 annotations, which Dotty doesn't support. The goal of this project is to change that by providing a
 non-macro-annotation-based version of Simulacrum.
 
-I have a Cats [branch](https://github.com/travisbrown/cats/tree/topic/simulacrum-scalafix-demo) that
+I have a Cats [branch](https://github.com/travisbrown/cats/tree/demo/simulacrum-scalafix) that
 demonstrates how these Scalafix rules work. You can follow along with the following steps:
 
 1. Add Scalafix and the locally-published Scalafix rules to the Cats build and remove Simulacrum 1, Macro Paradise, etc.
