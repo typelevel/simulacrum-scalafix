@@ -76,6 +76,9 @@ lazy val annotation = crossProject(JSPlatform, JVMPlatform)
     crossScalaVersions := Seq(scalaVersion.value, "2.13.1"),
     moduleName := "simulacrum-scalafix-annotations"
   )
+  .jsSettings(
+    coverageEnabled := false
+  )
 
 lazy val annotationJVM = annotation.jvm
 lazy val annotationJS = annotation.js
