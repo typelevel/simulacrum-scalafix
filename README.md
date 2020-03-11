@@ -53,31 +53,31 @@ non-macro-annotation-based version of Simulacrum.
 I have a Cats [branch](https://github.com/travisbrown/cats/tree/topic/simulacrum-scalafix-demo) that
 demonstrates how these Scalafix rules work. You can follow along with the following steps:
 
-1. Clone this repo and run `sbt +publishLocal` to publish the annotations and Scalafix rules locally.
-2. Check out the current master branch on Cats (in my case [this commit](https://github.com/typelevel/cats/commit/b3bc53900fe86a3bbd38565f8d799c7b08ccc90a)).
-3. If [#3186](https://github.com/typelevel/cats/pull/3186), [#3187](https://github.com/typelevel/cats/pull/3187),
-   [#3190](https://github.com/typelevel/cats/pull/3190), and [#3191](https://github.com/typelevel/cats/pull/3191) aren't yet merged, cherry-pick their commits.
-4. Add Scalafix and the locally-published Scalafix rules to the Cats build and remove Simulacrum 1, Macro Paradise, etc.
-   This takes [about a dozen lines](https://github.com/travisbrown/cats/commit/cb9c34aaf71ee2a0ca1e694ce00c6825f7a0ac6e)
+1. Add Scalafix and the locally-published Scalafix rules to the Cats build and remove Simulacrum 1, Macro Paradise, etc.
+   This takes [about eight lines](https://github.com/travisbrown/cats/commit/4f6d5c25892e5b07c57b1a8980eb8fc9d0869dae)
    of configuration.
-5. Add `@noop` annotations to `FlatMap#ifM`, `Functor#ifF`, and `Monad#whileM` and `whileM_`.
-   [This](https://github.com/travisbrown/cats/commit/749ffd92fae6be7d2fa98786761cfa0c8844fb40) is necessary for
+2. Add `@noop` annotations to `FlatMap#ifM`, `Functor#ifF`, and `Monad#whileM` and `whileM_`.
+   [This](https://github.com/travisbrown/cats/commit/69d91a0d4ec5987132b936ad6b24351dbd2ee3f8) is necessary for
    compatibility because Simulacrum 1 didn't handle these methods.
-6. Open an sbt console in the Cats repo and run the following commands:
+3. Open an sbt console in the Cats repo and run the following commands:
    ```
    sbt:cats> scalafix AddSerializable
    sbt:cats> scalafix AddImplicitNotFound
    sbt:cats> scalafix TypeClassSupport
    sbt:cats> scalafmtAll
    ```
-   This will result in [some boilerplate](https://github.com/travisbrown/cats/commit/a6a0eb39808fd545ecd0ad8d0ab2a769145ffb38) being added to the Cats source files:
+   This will result in [some boilerplate](https://github.com/travisbrown/cats/commit/a891d38104bfcc585b22a2c8ed65602fb4e13155) being added to the Cats source files:
    ```
-   50 files changed, 2206 insertions(+), 17 deletions(-)
+   50 files changed, 2461 insertions(+), 17 deletions(-)
    ```
-7. Run `sbt validateJVM` to verify that tests and binary-compatibility checks pass after the change
+4. Run `sbt validateJVM` to verify that tests and binary-compatibility checks pass after the change
    (and `sbt ++2.13.1 buildJVM` if you want to check Scala 2.13 as well).
 
 ## Cross-building cats-core on Dotty
+
+The instructions below are not up-to-date with Cats master, although they should still work.
+Please follow [this work-in-progress PR](https://github.com/typelevel/cats/pull/3269) for the
+current status of Dotty cross-building.
 
 You can add Dotty cross-building with a few additional steps:
 
