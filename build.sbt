@@ -16,27 +16,16 @@ val compilerOptions = Seq(
   "-P:semanticdb:synthetics:on"
 )
 
-def priorTo2_13(scalaVersion: String): Boolean =
-  CrossVersion.partialVersion(scalaVersion) match {
-    case Some((2, minor)) if minor < 13 => true
-    case _                              => false
-  }
-
 lazy val baseSettings = Seq(
-  scalaVersion := "2.12.10",
+  scalaVersion := "2.12.11",
   addCompilerPlugin(scalafixSemanticdb),
   scalacOptions ++= compilerOptions,
   scalacOptions ++= (
-    if (priorTo2_13(scalaVersion.value))
-      Seq(
-        "-Xfuture",
-        "-Yno-adapted-args",
-        "-Ywarn-unused-import"
-      )
-    else
-      Seq(
-        "-Ywarn-unused:imports"
-      )
+    Seq(
+      "-Xfuture",
+      "-Yno-adapted-args",
+      "-Ywarn-unused-import"
+    )
   ),
   scalacOptions in (Compile, console) ~= {
     _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
