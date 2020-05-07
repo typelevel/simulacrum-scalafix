@@ -69,11 +69,10 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
         }
       )
 
-    if (hasImplicitParams) {
+    if (hasImplicitParams)
       paramss.init :+ (if (atEnd) (paramss.last :+ param) else (param :: paramss.last))
-    } else {
+    else
       paramss :+ List(param)
-    }
   }
 
   private def newParams(
@@ -200,11 +199,11 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
 
         newParams(typeClass, tparams, selfParam, params, otherParamss) match {
           case Some((newTparams, newParamss, appliedTparams, appliedParamss, transformer)) =>
-            val body = if (appliedTparams.isEmpty) {
-              q"typeClassInstance.$origName(...$appliedParamss)"
-            } else {
-              q"typeClassInstance.$origName[..$appliedTparams](...$appliedParamss)"
-            }
+            val body =
+              if (appliedTparams.isEmpty)
+                q"typeClassInstance.$origName(...$appliedParamss)"
+              else
+                q"typeClassInstance.$origName[..$appliedTparams](...$appliedParamss)"
 
             names.map { name =>
               Defn.Def(newMods, name, newTparams, newParamss, decltpe.map(transformer.transformType), body)
@@ -307,15 +306,15 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
         object ThreeComments {
           def unapply(tokens: List[Token]): Option[(String, String, String)] = tokens match {
             case List(
-                Token.Comment(c0),
-                Token.LF(),
-                Token.Space(),
-                Token.Space(),
-                Token.Comment(c1),
-                Token.LF(),
-                Token.Space(),
-                Token.Space(),
-                Token.Comment(c2)
+                  Token.Comment(c0),
+                  Token.LF(),
+                  Token.Space(),
+                  Token.Space(),
+                  Token.Comment(c1),
+                  Token.LF(),
+                  Token.Space(),
+                  Token.Space(),
+                  Token.Comment(c2)
                 ) =>
               Some((c0, c1, c2))
             case _ => None
@@ -332,18 +331,17 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
           case _                         => false
         }
 
-        if (bannerIndex < 0 || footerIndex < 0) {
+        if (bannerIndex < 0 || footerIndex < 0)
           currentCompanion.tokens.last match {
             case brace @ Token.RightBrace() => Patch.addLeft(brace, s"\n$banner\n$code\n\n$footer\n")
             case other                      => Patch.addRight(other, s" {\n$banner\n$code\n\n$footer\n}")
           }
-        } else {
+        else
           Patch.removeTokens(tokens.slice(bannerIndex, footerIndex + 9)) +
             Patch.addRight(
               currentCompanion.tokens.apply(bannerIndex - 1),
               s"${banner.dropWhile(_ == ' ')}\n$code\n\n$footer"
             )
-        }
     }
   }
 }
