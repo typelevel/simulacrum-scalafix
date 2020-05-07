@@ -16,9 +16,8 @@ case class TypeClass(
   generateAllOps: Boolean
 ) {
   def typeParamApplied(args: List[String]): String = if (args.isEmpty) typeParamName
-  else {
+  else
     typeParamName + args.mkString("[", ", ", "]")
-  }
 }
 
 object TypeClass {
