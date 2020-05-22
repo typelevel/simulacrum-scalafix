@@ -19,14 +19,9 @@ val compilerOptions = Seq(
 lazy val baseSettings = Seq(
   scalaVersion := "2.12.11",
   addCompilerPlugin(scalafixSemanticdb),
+  // Manually bumping the patch version here to support 2.13.2.
+  dependencyOverrides += ("org.scalameta" %% "semanticdb-scalac" % "4.3.10").cross(CrossVersion.full).force(),
   scalacOptions ++= compilerOptions,
-  scalacOptions ++= (
-    Seq(
-      "-Xfuture",
-      "-Yno-adapted-args",
-      "-Ywarn-unused-import"
-    )
-  ),
   scalacOptions in (Compile, console) ~= {
     _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
   },
@@ -58,7 +53,7 @@ lazy val annotation = crossProject(JSPlatform, JVMPlatform)
   .in(file("annotation"))
   .settings(allSettings)
   .settings(
-    crossScalaVersions := Seq(scalaVersion.value, "2.13.1"),
+    crossScalaVersions := Seq(scalaVersion.value, "2.13.2"),
     moduleName := "simulacrum-scalafix-annotations"
   )
   .jsSettings(
