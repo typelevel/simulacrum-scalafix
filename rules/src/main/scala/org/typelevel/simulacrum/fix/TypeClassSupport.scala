@@ -248,13 +248,13 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
         |   */
         |  @inline def apply[$TypeParamDecl](implicit instance: $InstanceType): $InstanceType = instance
         |
-        |  trait Ops[$TypeParamsDecl] {
+        |  trait Ops[$TypeParamsDecl] extends Serializable {
         |    type TypeClassType <: $InstanceType
         |    def self: $ValueType
         |    val typeClassInstance: TypeClassType$Methods
         |  }
         |  trait AllOps[$TypeParamsDecl] extends Ops[$TypeParamsArgs]$AllOpsParents$AllOpsBody
-        |  trait To${Name}Ops {
+        |  trait To${Name}Ops extends Serializable {
         |    implicit def to${Name}Ops[$TypeParamsDecl](target: $ValueType)(implicit tc: $InstanceType): Ops[$TypeParamsArgs] {
         |      type TypeClassType = $InstanceType
         |    } = new Ops[$TypeParamsArgs] {
