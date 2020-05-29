@@ -37,7 +37,7 @@ object Compose {
    */
   @inline def apply[F[_, _]](implicit instance: Compose[F]): Compose[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Compose[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -46,7 +46,7 @@ object Compose {
     def >>>[C](g: F[B, C]): F[A, C] = typeClassInstance.andThen[A, B, C](self, g)
   }
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B]
-  trait ToComposeOps {
+  trait ToComposeOps extends Serializable {
     implicit def toComposeOps[F[_, _], A, B](target: F[A, B])(implicit tc: Compose[F]): Ops[F, A, B] {
       type TypeClassType = Compose[F]
     } = new Ops[F, A, B] {
@@ -86,7 +86,7 @@ object Category {
    */
   @inline def apply[F[_, _]](implicit instance: Category[F]): Category[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Category[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -94,7 +94,7 @@ object Category {
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B] with Compose.AllOps[F, A, B] {
     type TypeClassType <: Category[F]
   }
-  trait ToCategoryOps {
+  trait ToCategoryOps extends Serializable {
     implicit def toCategoryOps[F[_, _], A, B](target: F[A, B])(implicit tc: Category[F]): Ops[F, A, B] {
       type TypeClassType = Category[F]
     } = new Ops[F, A, B] {
@@ -168,7 +168,7 @@ object Profunctor {
    */
   @inline def apply[F[_, _]](implicit instance: Profunctor[F]): Profunctor[F] = instance
 
-  trait Ops[F[_, _], A, B] {
+  trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Profunctor[F]
     def self: F[A, B]
     val typeClassInstance: TypeClassType
@@ -177,7 +177,7 @@ object Profunctor {
     @inline final def rmap[C](f: B => C): F[A, C] = typeClassInstance.rmap[A, B, C](self)(f)
   }
   trait AllOps[F[_, _], A, B] extends Ops[F, A, B]
-  trait ToProfunctorOps {
+  trait ToProfunctorOps extends Serializable {
     implicit def toProfunctorOps[F[_, _], A, B](target: F[A, B])(implicit tc: Profunctor[F]): Ops[F, A, B] {
       type TypeClassType = Profunctor[F]
     } = new Ops[F, A, B] {

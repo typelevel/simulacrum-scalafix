@@ -18,13 +18,13 @@ object MissingCompanionAndSummoner {
    */
   @inline def apply[F[_]](implicit instance: MissingCompanionAndSummoner[F]): MissingCompanionAndSummoner[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: MissingCompanionAndSummoner[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
   }
   trait AllOps[F[_], A] extends Ops[F, A]
-  trait ToMissingCompanionAndSummonerOps {
+  trait ToMissingCompanionAndSummonerOps extends Serializable {
     implicit def toMissingCompanionAndSummonerOps[F[_], A](target: F[A])(implicit tc: MissingCompanionAndSummoner[F]): Ops[F, A] {
       type TypeClassType = MissingCompanionAndSummoner[F]
     } = new Ops[F, A] {
@@ -67,13 +67,13 @@ object MissingSummoner {
    */
   @inline def apply[F[_]](implicit instance: MissingSummoner[F]): MissingSummoner[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: MissingSummoner[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
   }
   trait AllOps[F[_], A] extends Ops[F, A]
-  trait ToMissingSummonerOps {
+  trait ToMissingSummonerOps extends Serializable {
     implicit def toMissingSummonerOps[F[_], A](target: F[A])(implicit tc: MissingSummoner[F]): Ops[F, A] {
       type TypeClassType = MissingSummoner[F]
     } = new Ops[F, A] {

@@ -47,14 +47,14 @@ object Alternative extends AlternativeFunctions {
    */
   @inline def apply[F[_]](implicit instance: Alternative[F]): Alternative[F] = instance
 
-  trait Ops[F[_], A] {
+  trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Alternative[F]
     def self: F[A]
     val typeClassInstance: TypeClassType
     def unite[G[_], B](implicit ev$1: A <:< G[B], FM: Monad[F], G: Bifoldable[G]): F[B] = typeClassInstance.unite[G, B](self.asInstanceOf[F[G[B]]])(FM, G)
   }
   trait AllOps[F[_], A] extends Ops[F, A]
-  trait ToAlternativeOps {
+  trait ToAlternativeOps extends Serializable {
     implicit def toAlternativeOps[F[_], A](target: F[A])(implicit tc: Alternative[F]): Ops[F, A] {
       type TypeClassType = Alternative[F]
     } = new Ops[F, A] {
