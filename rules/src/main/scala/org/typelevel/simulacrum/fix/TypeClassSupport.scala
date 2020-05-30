@@ -1,10 +1,30 @@
 package org.typelevel.simulacrum.fix
 
-import scalafix.v1.{Patch, SyntacticDocument, SyntacticRule}
+import metaconfig.{ConfDecoder, Configured}
+import metaconfig.generic.{Surface, deriveDecoder, deriveSurface}
+import scalafix.v1.{Configuration, Patch, Rule, SyntacticDocument, SyntacticRule}
 import scala.meta.{Decl, Defn, Mod, Term, Token, Transformer, Type, XtensionQuasiquoteTerm, XtensionQuasiquoteType}
 import scala.meta._
 
-class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
+case class Deprecation(message: String, since: String)
+case class TypeClassSupportConfig(opsObjectDeprecation: Option[Deprecation])
+
+object TypeClassSupportConfig {
+  val default: TypeClassSupportConfig = TypeClassSupportConfig(None)
+
+  implicit val deprecationSurface: Surface[Deprecation] = deriveSurface
+  implicit val deprecationDecoder: ConfDecoder[Deprecation] = deriveDecoder(Deprecation("", ""))
+
+  implicit val configSurface: Surface[TypeClassSupportConfig] = deriveSurface
+  implicit val configDecoder: ConfDecoder[TypeClassSupportConfig] = deriveDecoder(default)
+}
+
+class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("TypeClassSupport") {
+  def this() = this(TypeClassSupportConfig.default)
+
+  override def withConfiguration(config: Configuration): Configured[Rule] =
+    config.conf.getOrElse("TypeClassSupport")(this.config).map(new TypeClassSupport(_))
+
   override def description: String = "Add summoner and syntax method support to type class companion object"
   override def isLinter: Boolean = false
 
@@ -243,6 +263,11 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
             |  }""".stripMargin
     }
 
+    val deprecation = config.opsObjectDeprecation match {
+      case Some(Deprecation(message, since)) => "@deprecated(\"" + message + "\", \"" + since + "\")\n  "
+      case None                              => ""
+    }
+
     s"""|  /**
         |   * Summon an instance of [[$Name]] for `$TypeParamName`.
         |   */
@@ -254,7 +279,7 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
         |    val typeClassInstance: TypeClassType$Methods
         |  }
         |  trait AllOps[$TypeParamsDecl] extends Ops[$TypeParamsArgs]$AllOpsParents$AllOpsBody
-        |  trait To${Name}Ops extends Serializable {
+        |  ${deprecation}trait To${Name}Ops extends Serializable {
         |    implicit def to${Name}Ops[$TypeParamsDecl](target: $ValueType)(implicit tc: $InstanceType): Ops[$TypeParamsArgs] {
         |      type TypeClassType = $InstanceType
         |    } = new Ops[$TypeParamsArgs] {
@@ -263,8 +288,8 @@ class TypeClassSupport extends SyntacticRule("TypeClassSupport") {
         |      val typeClassInstance: TypeClassType = tc
         |    }
         |  }
-        |  object nonInheritedOps extends To${Name}Ops
-        |  object ops {
+        |  ${deprecation}object nonInheritedOps extends To${Name}Ops
+        |  ${deprecation}object ops {
         |    implicit def toAll${Name}Ops[$TypeParamsDecl](target: $ValueType)(implicit tc: $InstanceType): AllOps[$TypeParamsArgs] {
         |      type TypeClassType = $InstanceType
         |    } = new AllOps[$TypeParamsArgs] {
