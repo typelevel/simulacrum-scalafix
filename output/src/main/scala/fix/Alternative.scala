@@ -54,7 +54,6 @@ object Alternative extends AlternativeFunctions {
     def unite[G[_], B](implicit ev$1: A <:< G[B], FM: Monad[F], G: Bifoldable[G]): F[B] = typeClassInstance.unite[G, B](self.asInstanceOf[F[G[B]]])(FM, G)
   }
   trait AllOps[F[_], A] extends Ops[F, A]
-  @deprecated("Use cats.syntax object imports", "2.2.0")
   trait ToAlternativeOps extends Serializable {
     implicit def toAlternativeOps[F[_], A](target: F[A])(implicit tc: Alternative[F]): Ops[F, A] {
       type TypeClassType = Alternative[F]

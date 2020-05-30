@@ -279,7 +279,7 @@ class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("Ty
         |    val typeClassInstance: TypeClassType$Methods
         |  }
         |  trait AllOps[$TypeParamsDecl] extends Ops[$TypeParamsArgs]$AllOpsParents$AllOpsBody
-        |  ${deprecation}trait To${Name}Ops extends Serializable {
+        |  trait To${Name}Ops extends Serializable {
         |    implicit def to${Name}Ops[$TypeParamsDecl](target: $ValueType)(implicit tc: $InstanceType): Ops[$TypeParamsArgs] {
         |      type TypeClassType = $InstanceType
         |    } = new Ops[$TypeParamsArgs] {
