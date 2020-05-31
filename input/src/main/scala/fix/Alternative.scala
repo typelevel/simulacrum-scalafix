@@ -1,5 +1,9 @@
 /*
 rule = TypeClassSupport
+TypeClassSupport.opsObjectDeprecation = {
+  message = "Use cats.syntax object imports"
+  since = "2.2.0"
+}
  */
 package cats
 
