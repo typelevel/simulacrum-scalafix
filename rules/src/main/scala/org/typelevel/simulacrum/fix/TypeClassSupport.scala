@@ -28,6 +28,20 @@ class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("Ty
   override def description: String = "Add summoner and syntax method support to type class companion object"
   override def isLinter: Boolean = false
 
+  def previousBanners: List[String] = List(
+    """|  /****************************************************************************/
+       |  /* THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      */
+       |  /****************************************************************************/
+       |""".stripMargin
+  )
+
+  def previousFooters: List[String] = List(
+    """|  /****************************************************************************/
+       |  /* END OF SIMULACRUM-MANAGED CODE                                           */
+       |  /****************************************************************************/
+       |""".stripMargin
+  )
+
   def banner: String =
     """|  /* ======================================================================== */
        |  /* THE FOLLOWING CODE IS MANAGED BY SIMULACRUM; PLEASE DO NOT EDIT!!!!      */
@@ -44,8 +58,11 @@ class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("Ty
     input.split("\n") match {
       case Array(i0, i1, i2) => (i0.drop(4).dropRight(2), i1.drop(4).dropRight(2), i2.drop(4).dropRight(2))
     }
-  def isBanner(c0: String, c1: String, c2: String): Boolean = (c0, c1, c2) == getComments(banner)
-  def isFooter(c0: String, c1: String, c2: String): Boolean = (c0, c1, c2) == getComments(footer)
+  def isBanner(c0: String, c1: String, c2: String): Boolean =
+    (c0, c1, c2) == getComments(banner) || previousBanners.exists(b => (c0, c1, c2) == getComments(b))
+
+  def isFooter(c0: String, c1: String, c2: String): Boolean =
+    (c0, c1, c2) == getComments(footer) || previousFooters.exists(f => (c0, c1, c2) == getComments(f))
 
   def isValidOpsMethod(mods: List[Mod]): Boolean = mods.forall {
     case Mod.Private(_)   => false
