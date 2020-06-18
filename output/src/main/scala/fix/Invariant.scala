@@ -37,6 +37,15 @@ object Invariant {
    */
   @inline def apply[F[_]](implicit instance: Invariant[F]): Invariant[F] = instance
 
+  object ops {
+    implicit def toAllInvariantOps[F[_], A](target: F[A])(implicit tc: Invariant[F]): AllOps[F, A] {
+      type TypeClassType = Invariant[F]
+    } = new AllOps[F, A] {
+      type TypeClassType = Invariant[F]
+      val self: F[A] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Invariant[F]
     def self: F[A]
@@ -54,15 +63,6 @@ object Invariant {
     }
   }
   object nonInheritedOps extends ToInvariantOps
-  object ops {
-    implicit def toAllInvariantOps[F[_], A](target: F[A])(implicit tc: Invariant[F]): AllOps[F, A] {
-      type TypeClassType = Invariant[F]
-    } = new AllOps[F, A] {
-      type TypeClassType = Invariant[F]
-      val self: F[A] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */
@@ -87,6 +87,15 @@ object InvariantSemigroupal {
    */
   @inline def apply[F[_]](implicit instance: InvariantSemigroupal[F]): InvariantSemigroupal[F] = instance
 
+  object ops {
+    implicit def toAllInvariantSemigroupalOps[F[_], A](target: F[A])(implicit tc: InvariantSemigroupal[F]): AllOps[F, A] {
+      type TypeClassType = InvariantSemigroupal[F]
+    } = new AllOps[F, A] {
+      type TypeClassType = InvariantSemigroupal[F]
+      val self: F[A] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: InvariantSemigroupal[F]
     def self: F[A]
@@ -106,15 +115,6 @@ object InvariantSemigroupal {
     }
   }
   object nonInheritedOps extends ToInvariantSemigroupalOps
-  object ops {
-    implicit def toAllInvariantSemigroupalOps[F[_], A](target: F[A])(implicit tc: InvariantSemigroupal[F]): AllOps[F, A] {
-      type TypeClassType = InvariantSemigroupal[F]
-    } = new AllOps[F, A] {
-      type TypeClassType = InvariantSemigroupal[F]
-      val self: F[A] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */
@@ -137,6 +137,15 @@ object ContravariantSemigroupal {
    */
   @inline def apply[F[_]](implicit instance: ContravariantSemigroupal[F]): ContravariantSemigroupal[F] = instance
 
+  object ops {
+    implicit def toAllContravariantSemigroupalOps[F[_], A](target: F[A])(implicit tc: ContravariantSemigroupal[F]): AllOps[F, A] {
+      type TypeClassType = ContravariantSemigroupal[F]
+    } = new AllOps[F, A] {
+      type TypeClassType = ContravariantSemigroupal[F]
+      val self: F[A] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: ContravariantSemigroupal[F]
     def self: F[A]
@@ -153,15 +162,6 @@ object ContravariantSemigroupal {
     }
   }
   object nonInheritedOps extends ToContravariantSemigroupalOps
-  object ops {
-    implicit def toAllContravariantSemigroupalOps[F[_], A](target: F[A])(implicit tc: ContravariantSemigroupal[F]): AllOps[F, A] {
-      type TypeClassType = ContravariantSemigroupal[F]
-    } = new AllOps[F, A] {
-      type TypeClassType = ContravariantSemigroupal[F]
-      val self: F[A] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */

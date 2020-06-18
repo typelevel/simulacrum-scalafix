@@ -37,6 +37,15 @@ object Compose {
    */
   @inline def apply[F[_, _]](implicit instance: Compose[F]): Compose[F] = instance
 
+  object ops {
+    implicit def toAllComposeOps[F[_, _], A, B](target: F[A, B])(implicit tc: Compose[F]): AllOps[F, A, B] {
+      type TypeClassType = Compose[F]
+    } = new AllOps[F, A, B] {
+      type TypeClassType = Compose[F]
+      val self: F[A, B] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Compose[F]
     def self: F[A, B]
@@ -56,15 +65,6 @@ object Compose {
     }
   }
   object nonInheritedOps extends ToComposeOps
-  object ops {
-    implicit def toAllComposeOps[F[_, _], A, B](target: F[A, B])(implicit tc: Compose[F]): AllOps[F, A, B] {
-      type TypeClassType = Compose[F]
-    } = new AllOps[F, A, B] {
-      type TypeClassType = Compose[F]
-      val self: F[A, B] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */
@@ -86,6 +86,15 @@ object Category {
    */
   @inline def apply[F[_, _]](implicit instance: Category[F]): Category[F] = instance
 
+  object ops {
+    implicit def toAllCategoryOps[F[_, _], A, B](target: F[A, B])(implicit tc: Category[F]): AllOps[F, A, B] {
+      type TypeClassType = Category[F]
+    } = new AllOps[F, A, B] {
+      type TypeClassType = Category[F]
+      val self: F[A, B] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Category[F]
     def self: F[A, B]
@@ -104,15 +113,6 @@ object Category {
     }
   }
   object nonInheritedOps extends ToCategoryOps
-  object ops {
-    implicit def toAllCategoryOps[F[_, _], A, B](target: F[A, B])(implicit tc: Category[F]): AllOps[F, A, B] {
-      type TypeClassType = Category[F]
-    } = new AllOps[F, A, B] {
-      type TypeClassType = Category[F]
-      val self: F[A, B] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */
@@ -168,6 +168,15 @@ object Profunctor {
    */
   @inline def apply[F[_, _]](implicit instance: Profunctor[F]): Profunctor[F] = instance
 
+  object ops {
+    implicit def toAllProfunctorOps[F[_, _], A, B](target: F[A, B])(implicit tc: Profunctor[F]): AllOps[F, A, B] {
+      type TypeClassType = Profunctor[F]
+    } = new AllOps[F, A, B] {
+      type TypeClassType = Profunctor[F]
+      val self: F[A, B] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_, _], A, B] extends Serializable {
     type TypeClassType <: Profunctor[F]
     def self: F[A, B]
@@ -187,15 +196,6 @@ object Profunctor {
     }
   }
   object nonInheritedOps extends ToProfunctorOps
-  object ops {
-    implicit def toAllProfunctorOps[F[_, _], A, B](target: F[A, B])(implicit tc: Profunctor[F]): AllOps[F, A, B] {
-      type TypeClassType = Profunctor[F]
-    } = new AllOps[F, A, B] {
-      type TypeClassType = Profunctor[F]
-      val self: F[A, B] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */

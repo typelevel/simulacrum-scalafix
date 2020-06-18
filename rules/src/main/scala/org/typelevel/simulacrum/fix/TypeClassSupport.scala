@@ -290,6 +290,15 @@ class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("Ty
         |   */
         |  @inline def apply[$TypeParamDecl](implicit instance: $InstanceType): $InstanceType = instance
         |
+        |  ${deprecation}object ops {
+        |    implicit def toAll${Name}Ops[$TypeParamsDecl](target: $ValueType)(implicit tc: $InstanceType): AllOps[$TypeParamsArgs] {
+        |      type TypeClassType = $InstanceType
+        |    } = new AllOps[$TypeParamsArgs] {
+        |      type TypeClassType = $InstanceType
+        |      val self: $ValueType = target
+        |      val typeClassInstance: TypeClassType = tc
+        |    }
+        |  }
         |  trait Ops[$TypeParamsDecl] extends Serializable {
         |    type TypeClassType <: $InstanceType
         |    def self: $ValueType
@@ -305,16 +314,7 @@ class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("Ty
         |      val typeClassInstance: TypeClassType = tc
         |    }
         |  }
-        |  ${deprecation}object nonInheritedOps extends To${Name}Ops
-        |  ${deprecation}object ops {
-        |    implicit def toAll${Name}Ops[$TypeParamsDecl](target: $ValueType)(implicit tc: $InstanceType): AllOps[$TypeParamsArgs] {
-        |      type TypeClassType = $InstanceType
-        |    } = new AllOps[$TypeParamsArgs] {
-        |      type TypeClassType = $InstanceType
-        |      val self: $ValueType = target
-        |      val typeClassInstance: TypeClassType = tc
-        |    }
-        |  }""".stripMargin
+        |  ${deprecation}object nonInheritedOps extends To${Name}Ops""".stripMargin
   }
 
   override def fix(implicit doc: SyntacticDocument): Patch = TypeClass.toPatch(doc.tree) { typeClass =>
