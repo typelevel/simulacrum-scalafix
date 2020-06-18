@@ -32,13 +32,22 @@ object TypeClass {
   }
 
   object PackageAndBody {
+    private object PackageParts {
+      def unapply(tree: Tree): Option[List[String]] =
+        tree match {
+          case Term.Select(base, Term.Name(last)) => unapply(base).map(last :: _)
+          case Term.Name(p)                       => Some(List(p))
+          case _                                  => None
+        }
+    }
+
     def unapply(tree: Tree): Option[(List[String], List[Tree])] = tree match {
       case Pkg(Term.Name(name), List(pkg @ Pkg(_, _))) =>
         unapply(pkg).map {
           case (inner, body) => (name :: inner, body)
         }
-      case Pkg(Term.Name(name), body) => Some((List(name), body))
-      case _                          => None
+      case Pkg(PackageParts(pkg), body) => Some(pkg.reverse, body)
+      case _                            => None
     }
   }
 
