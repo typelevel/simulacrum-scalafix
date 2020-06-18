@@ -18,6 +18,15 @@ object MissingCompanionAndSummoner {
    */
   @inline def apply[F[_]](implicit instance: MissingCompanionAndSummoner[F]): MissingCompanionAndSummoner[F] = instance
 
+  object ops {
+    implicit def toAllMissingCompanionAndSummonerOps[F[_], A](target: F[A])(implicit tc: MissingCompanionAndSummoner[F]): AllOps[F, A] {
+      type TypeClassType = MissingCompanionAndSummoner[F]
+    } = new AllOps[F, A] {
+      type TypeClassType = MissingCompanionAndSummoner[F]
+      val self: F[A] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: MissingCompanionAndSummoner[F]
     def self: F[A]
@@ -34,15 +43,6 @@ object MissingCompanionAndSummoner {
     }
   }
   object nonInheritedOps extends ToMissingCompanionAndSummonerOps
-  object ops {
-    implicit def toAllMissingCompanionAndSummonerOps[F[_], A](target: F[A])(implicit tc: MissingCompanionAndSummoner[F]): AllOps[F, A] {
-      type TypeClassType = MissingCompanionAndSummoner[F]
-    } = new AllOps[F, A] {
-      type TypeClassType = MissingCompanionAndSummoner[F]
-      val self: F[A] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */
@@ -67,6 +67,15 @@ object MissingSummoner {
    */
   @inline def apply[F[_]](implicit instance: MissingSummoner[F]): MissingSummoner[F] = instance
 
+  object ops {
+    implicit def toAllMissingSummonerOps[F[_], A](target: F[A])(implicit tc: MissingSummoner[F]): AllOps[F, A] {
+      type TypeClassType = MissingSummoner[F]
+    } = new AllOps[F, A] {
+      type TypeClassType = MissingSummoner[F]
+      val self: F[A] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: MissingSummoner[F]
     def self: F[A]
@@ -83,15 +92,6 @@ object MissingSummoner {
     }
   }
   object nonInheritedOps extends ToMissingSummonerOps
-  object ops {
-    implicit def toAllMissingSummonerOps[F[_], A](target: F[A])(implicit tc: MissingSummoner[F]): AllOps[F, A] {
-      type TypeClassType = MissingSummoner[F]
-    } = new AllOps[F, A] {
-      type TypeClassType = MissingSummoner[F]
-      val self: F[A] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */

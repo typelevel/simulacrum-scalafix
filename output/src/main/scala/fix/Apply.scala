@@ -49,6 +49,15 @@ object Apply {
    */
   @inline def apply[F[_]](implicit instance: Apply[F]): Apply[F] = instance
 
+  object ops {
+    implicit def toAllApplyOps[F[_], A](target: F[A])(implicit tc: Apply[F]): AllOps[F, A] {
+      type TypeClassType = Apply[F]
+    } = new AllOps[F, A] {
+      type TypeClassType = Apply[F]
+      val self: F[A] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: Apply[F]
     def self: F[A]
@@ -70,15 +79,6 @@ object Apply {
     }
   }
   object nonInheritedOps extends ToApplyOps
-  object ops {
-    implicit def toAllApplyOps[F[_], A](target: F[A])(implicit tc: Apply[F]): AllOps[F, A] {
-      type TypeClassType = Apply[F]
-    } = new AllOps[F, A] {
-      type TypeClassType = Apply[F]
-      val self: F[A] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */
@@ -121,6 +121,15 @@ object FlatMap {
    */
   @inline def apply[F[_]](implicit instance: FlatMap[F]): FlatMap[F] = instance
 
+  object ops {
+    implicit def toAllFlatMapOps[F[_], A](target: F[A])(implicit tc: FlatMap[F]): AllOps[F, A] {
+      type TypeClassType = FlatMap[F]
+    } = new AllOps[F, A] {
+      type TypeClassType = FlatMap[F]
+      val self: F[A] = target
+      val typeClassInstance: TypeClassType = tc
+    }
+  }
   trait Ops[F[_], A] extends Serializable {
     type TypeClassType <: FlatMap[F]
     def self: F[A]
@@ -141,15 +150,6 @@ object FlatMap {
     }
   }
   object nonInheritedOps extends ToFlatMapOps
-  object ops {
-    implicit def toAllFlatMapOps[F[_], A](target: F[A])(implicit tc: FlatMap[F]): AllOps[F, A] {
-      type TypeClassType = FlatMap[F]
-    } = new AllOps[F, A] {
-      type TypeClassType = FlatMap[F]
-      val self: F[A] = target
-      val typeClassInstance: TypeClassType = tc
-    }
-  }
 
   /* ======================================================================== */
   /* END OF SIMULACRUM-MANAGED CODE                                           */
