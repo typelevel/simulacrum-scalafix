@@ -17,10 +17,8 @@ val compilerOptions = Seq(
 )
 
 lazy val baseSettings = Seq(
-  scalaVersion := "2.12.11",
+  scalaVersion := "2.12.12",
   addCompilerPlugin(scalafixSemanticdb),
-  // Manually bumping the patch version here to support 2.13.2.
-  dependencyOverrides += ("org.scalameta" %% "semanticdb-scalac" % "4.3.13").cross(CrossVersion.full).force(),
   scalacOptions ++= compilerOptions,
   scalacOptions in (Compile, console) ~= {
     _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
