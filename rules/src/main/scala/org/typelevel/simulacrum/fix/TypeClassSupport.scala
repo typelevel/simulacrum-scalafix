@@ -155,11 +155,10 @@ class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("Ty
               (newTparams, gns, mapping, evs :+ (Type.Name(gn) -> other), cbs)
           }
 
-        val cbs = tparams.flatMap {
-          case param @ Type.Param(_, name, _, _, _, cbounds) =>
-            cbounds.map { cbound =>
-              t"$cbound[${Type.Name(param.name.value)}]"
-            }
+        val cbs = tparams.flatMap { case param @ Type.Param(_, name, _, _, _, cbounds) =>
+          cbounds.map { cbound =>
+            t"$cbound[${Type.Name(param.name.value)}]"
+          }
         }
 
         val fullMapping = mapping ++ leftTparams.filter(_.tparams.isEmpty).zip(leftGenericNames).map {
@@ -174,16 +173,14 @@ class TypeClassSupport(config: TypeClassSupportConfig) extends SyntacticRule("Ty
           case rest => rest :: otherParamss
         }
 
-        val evParams = evs.zipWithIndex.map {
-          case ((source, target), i) =>
-            val paramName = Term.Name(s"ev$$${i + 1}")
-            param"implicit $paramName: $source <:< ${transformer.transformType(target)}"
+        val evParams = evs.zipWithIndex.map { case ((source, target), i) =>
+          val paramName = Term.Name(s"ev$$${i + 1}")
+          param"implicit $paramName: $source <:< ${transformer.transformType(target)}"
         }
 
-        val cbParams = cbs.zipWithIndex.map {
-          case (target, i) =>
-            val paramName = Term.Name(s"ev$$${evParams.size + i + 1}")
-            param"implicit $paramName: ${transformer.transformType(target)}"
+        val cbParams = cbs.zipWithIndex.map { case (target, i) =>
+          val paramName = Term.Name(s"ev$$${evParams.size + i + 1}")
+          param"implicit $paramName: ${transformer.transformType(target)}"
         }
 
         val mappedParamss = cbParams.reverse.foldLeft(
