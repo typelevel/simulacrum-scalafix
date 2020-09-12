@@ -11,12 +11,11 @@ class ParenthesizeLambdaParamWithType extends SyntacticRule("ParenthesizeLambdaP
   override def isLinter: Boolean = false
 
   override def fix(implicit doc: SyntacticDocument): Patch = Patch.fromIterable(
-    doc.tree.collect {
-      case Term.Function(List(param @ Term.Param(_, _, Some(_), None)), _) =>
-        param.tokens.headOption match {
-          case Some(Token.LeftParen()) => Patch.empty
-          case _                       => Patch.replaceTree(param, s"($param)")
-        }
+    doc.tree.collect { case Term.Function(List(param @ Term.Param(_, _, Some(_), None)), _) =>
+      param.tokens.headOption match {
+        case Some(Token.LeftParen()) => Patch.empty
+        case _                       => Patch.replaceTree(param, s"($param)")
+      }
     }
   )
 }

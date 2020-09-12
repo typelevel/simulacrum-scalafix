@@ -43,8 +43,8 @@ object TypeClass {
 
     def unapply(tree: Tree): Option[(List[String], List[Tree])] = tree match {
       case Pkg(Term.Name(name), List(pkg @ Pkg(_, _))) =>
-        unapply(pkg).map {
-          case (inner, body) => (name :: inner, body)
+        unapply(pkg).map { case (inner, body) =>
+          (name :: inner, body)
         }
       case Pkg(PackageParts(pkg), body) => Some(pkg.reverse, body)
       case _                            => None
@@ -66,27 +66,26 @@ object TypeClass {
             Some(
               AnnotationParser.parseTypeClassArgs(annotationArgs).flatMap {
                 case TypeClassArgs(excludeParents, generateAllOps) =>
-                  val companion = body.collectFirst {
-                    case tree @ Defn.Object(_, Term.Name(`name`), _) => tree
+                  val companion = body.collectFirst { case tree @ Defn.Object(_, Term.Name(`name`), _) =>
+                    tree
                   }
 
                   tparams match {
                     case List(Type.Param(_, Type.Name(typeParamName), ps, _, _, _)) =>
-                      ps.traverse {
-                        case Type.Param(mods, Name.Anonymous(), Nil, Type.Bounds(None, None), Nil, Nil) =>
-                          mods match {
-                            case Nil                       => Right(Variance.Invariant)
-                            case List(Mod.Covariant())     => Right(Variance.Covariant)
-                            case List(Mod.Contravariant()) => Right(Variance.Contravariant)
-                            case other =>
-                              Left(
-                                other.filter {
-                                  case Mod.Contravariant() => false
-                                  case Mod.Covariant()     => false
-                                  case _                   => true
-                                }.map(mod => TypeParamsError(mod.pos))
-                              )
-                          }
+                      ps.traverse { case Type.Param(mods, Name.Anonymous(), Nil, Type.Bounds(None, None), Nil, Nil) =>
+                        mods match {
+                          case Nil                       => Right(Variance.Invariant)
+                          case List(Mod.Covariant())     => Right(Variance.Covariant)
+                          case List(Mod.Contravariant()) => Right(Variance.Contravariant)
+                          case other =>
+                            Left(
+                              other.filter {
+                                case Mod.Contravariant() => false
+                                case Mod.Covariant()     => false
+                                case _                   => true
+                              }.map(mod => TypeParamsError(mod.pos))
+                            )
+                        }
                       }.flatMap { characterizedKinds =>
                         val parents = template.inits.collect {
                           case Init(Type.Apply(Type.Name(name), List(Type.Name(`typeParamName`))), _, _) => name

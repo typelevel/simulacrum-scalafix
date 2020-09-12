@@ -16,8 +16,8 @@ class AddSerializable extends SyntacticRule("AddSerializable") {
     typeClass.tree.fold(_.templ, _.templ) match {
       case tree @ Template(_, Nil, self, _) =>
         val tokens = typeClass.tree.merge.tokens
-        val openingBrace = tokens.collectFirst {
-          case brace @ Token.LeftBrace() => brace
+        val openingBrace = tokens.collectFirst { case brace @ Token.LeftBrace() =>
+          brace
         }
 
         openingBrace match {
