@@ -1,6 +1,11 @@
 import sbtcrossproject.{CrossType, crossProject}
 
-organization in ThisBuild := "org.typelevel"
+ThisBuild / organization := "org.typelevel"
+
+ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.2")
+ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.head
+
+ThisBuild / githubWorkflowPublishTargetBranches := Seq()
 
 val compilerOptions = Seq(
   "-deprecation",
@@ -17,7 +22,6 @@ val compilerOptions = Seq(
 )
 
 lazy val baseSettings = Seq(
-  scalaVersion := "2.12.12",
   addCompilerPlugin(scalafixSemanticdb),
   scalacOptions ++= compilerOptions,
   scalacOptions in (Compile, console) ~= {
@@ -31,8 +35,9 @@ lazy val baseSettings = Seq(
 
 lazy val allSettings = baseSettings ++ publishSettings
 
+val metaSettings = Seq(crossScalaVersions := Seq("2.12.12"))
+
 val testSettings = Seq(
-  crossScalaVersions := Seq(scalaVersion.value),
   skip in publish := true,
   addCompilerPlugin(("org.typelevel" %% "kind-projector" % "0.11.0").cross(CrossVersion.full)),
   libraryDependencies += "org.typelevel" %% "cats-kernel" % "2.2.0"
@@ -42,6 +47,7 @@ lazy val V = _root_.scalafix.sbt.BuildInfo
 
 lazy val root = project
   .in(file("."))
+  .settings(metaSettings)
   .settings(allSettings ++ noPublishSettings)
   .aggregate(annotationJVM, annotationJS, rules, input, output, tests)
 
@@ -51,7 +57,6 @@ lazy val annotation = crossProject(JSPlatform, JVMPlatform)
   .in(file("annotation"))
   .settings(allSettings)
   .settings(
-    crossScalaVersions := Seq(scalaVersion.value, "2.13.2"),
     moduleName := "simulacrum-scalafix-annotations"
   )
   .jsSettings(
@@ -63,8 +68,8 @@ lazy val annotationJS = annotation.js
 
 lazy val rules = project
   .settings(allSettings)
+  .settings(metaSettings)
   .settings(
-    crossScalaVersions := Seq(scalaVersion.value),
     moduleName := "simulacrum-scalafix",
     libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion,
     scalacOptions += "-Ywarn-unused-import"
@@ -76,8 +81,8 @@ lazy val output = project.disablePlugins(ScalafmtPlugin).settings(allSettings ++
 
 lazy val tests = project
   .settings(allSettings)
+  .settings(metaSettings)
   .settings(
-    crossScalaVersions := Seq(scalaVersion.value),
     skip in publish := true,
     libraryDependencies += ("ch.epfl.scala" % "scalafix-testkit" % V.scalafixVersion % Test).cross(CrossVersion.full),
     compile.in(Compile) :=
