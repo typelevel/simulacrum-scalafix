@@ -2,10 +2,23 @@ import sbtcrossproject.{CrossType, crossProject}
 
 ThisBuild / organization := "org.typelevel"
 
-ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.2")
+val Scala212 = "2.12.12"
+
+ThisBuild / crossScalaVersions := Seq(Scala212, "2.13.2", "0.27.0-RC1", "3.0.0-M1")
 ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.head
 
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
+
+ThisBuild / githubWorkflowBuild := Seq(
+  WorkflowStep.Sbt(
+    List("test"),
+    name = Some("Build and test all rules"),
+    cond = Some(s"matrix.scala == '$Scala212'")),
+
+  WorkflowStep.Sbt(
+    List("annotation/test:compile", "annotationJS/test:compile"),
+    name = Some("Build annotations"),
+    cond = Some(s"matrix.scala != '$Scala212'")))
 
 val compilerOptions = Seq(
   "-deprecation",
@@ -22,25 +35,42 @@ val compilerOptions = Seq(
 )
 
 lazy val baseSettings = Seq(
-  addCompilerPlugin(scalafixSemanticdb),
-  scalacOptions ++= compilerOptions,
+  libraryDependencies ++= {
+    if (isDotty.value)
+      Nil
+    else
+      Seq(compilerPlugin(scalafixSemanticdb))
+  },
+  scalacOptions ++= { if (isDotty.value) Seq("-Ykind-projector") else compilerOptions },
   scalacOptions in (Compile, console) ~= {
     _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
   },
   scalacOptions in (Test, console) ~= {
     _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
   },
-  coverageHighlighting := true
+  coverageHighlighting := true,
+  Compile / doc / sources := {
+    val old = (Compile / doc / sources).value
+    if (isDotty.value)
+      Seq()
+    else
+      old
+  }
 )
 
 lazy val allSettings = baseSettings ++ publishSettings
 
-val metaSettings = Seq(crossScalaVersions := Seq("2.12.12"))
+val metaSettings = Seq(crossScalaVersions := Seq(Scala212))
 
 val testSettings = Seq(
   skip in publish := true,
-  addCompilerPlugin(("org.typelevel" %% "kind-projector" % "0.11.0").cross(CrossVersion.full)),
-  libraryDependencies += "org.typelevel" %% "cats-kernel" % "2.2.0"
+  libraryDependencies ++= {
+    if (isDotty.value)
+      Nil
+    else
+      Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.11.0").cross(CrossVersion.full)))
+  },
+  libraryDependencies += ("org.typelevel" %% "cats-kernel" % "2.2.0").withDottyCompat(scalaVersion.value)
 )
 
 lazy val V = _root_.scalafix.sbt.BuildInfo
@@ -75,7 +105,10 @@ lazy val rules = project
     scalacOptions += "-Ywarn-unused-import"
   )
 
-lazy val input = project.settings(allSettings ++ testSettings).dependsOn(annotationJVM)
+lazy val input = project
+  .settings(crossScalaVersions := crossScalaVersions.value.filter(_.startsWith("2.")))
+  .settings(allSettings ++ testSettings)
+  .dependsOn(annotationJVM)
 
 lazy val output = project.disablePlugins(ScalafmtPlugin).settings(allSettings ++ testSettings).dependsOn(annotationJVM)
 
