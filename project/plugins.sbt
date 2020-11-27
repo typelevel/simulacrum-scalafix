@@ -1,4 +1,4 @@
-addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.23")
+addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.24")
 addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.4.6")
 
 addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.9.5")
