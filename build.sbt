@@ -77,6 +77,7 @@ lazy val V = _root_.scalafix.sbt.BuildInfo
 
 lazy val root = project
   .in(file("."))
+  .settings(metaSettings)
   .settings(allSettings ++ noPublishSettings)
   .aggregate(annotationJVM, annotationJS, rules, input, output, tests)
 
