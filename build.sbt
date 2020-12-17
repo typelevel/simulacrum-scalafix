@@ -1,4 +1,5 @@
 import sbtcrossproject.{CrossType, crossProject}
+import ReleaseTransformations._
 
 ThisBuild / organization := "org.typelevel"
 
@@ -79,6 +80,22 @@ lazy val root = project
   .in(file("."))
   .settings(metaSettings)
   .settings(allSettings ++ noPublishSettings)
+  .settings(
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      inquireVersions,
+      runClean,
+      releaseStepCommandAndRemaining("+test"),
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      releaseStepCommandAndRemaining("+publishSigned"),
+      releaseStepCommand("sonatypeBundleRelease"),
+      setNextVersion,
+      commitNextVersion,
+      pushChanges
+    )
+  )
   .aggregate(annotationJVM, annotationJS, rules, input, output, tests)
 
 lazy val annotation = crossProject(JSPlatform, JVMPlatform)
