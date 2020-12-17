@@ -101,10 +101,6 @@ lazy val rules = project
   .settings(
     moduleName := "simulacrum-scalafix",
     libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion,
-    libraryDependencies ++= {
-      if (scalaVersion.value == Scala212) Seq("ch.epfl.scala" % "scalafix-core" % V.scalafixVersion)
-      else Nil
-    },
     scalacOptions += "-Ywarn-unused-import"
   )
 
