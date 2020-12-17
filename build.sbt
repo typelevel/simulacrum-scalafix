@@ -116,7 +116,10 @@ lazy val tests = project
   .settings(metaSettings)
   .settings(
     skip in publish := true,
-    libraryDependencies += ("ch.epfl.scala" % "scalafix-testkit" % V.scalafixVersion % Test).cross(CrossVersion.full),
+    libraryDependencies ++= {
+      if (scalaVersion.value == Scala212) Seq(("ch.epfl.scala" % "scalafix-testkit" % V.scalafixVersion % Test).cross(CrossVersion.full))
+      else Nil
+    },
     compile.in(Compile) :=
       compile.in(Compile).dependsOn(compile.in(input, Compile)).value,
     scalafixTestkitOutputSourceDirectories :=
