@@ -69,7 +69,7 @@ val testSettings = Seq(
     if (isDotty.value)
       Nil
     else
-      Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.11.2").cross(CrossVersion.full)))
+      Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.11.3").cross(CrossVersion.full)))
   },
   libraryDependencies += ("org.typelevel" %% "cats-kernel" % "2.3.1").withDottyCompat(scalaVersion.value)
 )
