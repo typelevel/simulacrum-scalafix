@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.12.12, 2.13.3, 3.0.0-M2, 3.0.0-M3]
+        scala: [2.12.13, 2.13.3, 3.0.0-M2, 3.0.0-M3]
         java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -52,9 +52,9 @@ jobs:
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
       - name: Build and test all rules
-        if: matrix.scala == '2.12.12'
+        if: matrix.scala == '2.12.13'
         run: sbt ++${{ matrix.scala }} test
 
       - name: Build annotations
-        if: matrix.scala != '2.12.12'
+        if: matrix.scala != '2.12.13'
         run: 'sbt ++${{ matrix.scala }} annotation/test:compile annotationJS/test:compile'
