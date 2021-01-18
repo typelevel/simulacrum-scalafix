@@ -1,7 +1,7 @@
 addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.25")
 addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.5.1")
 
-addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.9.5")
+addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.10.0")
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.1.1")
 addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "1.0.0")
