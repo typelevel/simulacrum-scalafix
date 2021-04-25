@@ -37,25 +37,22 @@ val compilerOptions = Seq(
 
 lazy val baseSettings = Seq(
   libraryDependencies ++= {
-    if (isDotty.value)
+    if (scalaVersion.value.startsWith("3"))
       Nil
     else
       Seq(compilerPlugin(scalafixSemanticdb))
   },
-  scalacOptions ++= { if (isDotty.value) Seq("-Ykind-projector") else compilerOptions },
-  scalacOptions in (Compile, console) ~= {
-    _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
-  },
-  scalacOptions in (Test, console) ~= {
-    _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
-  },
-  coverageHighlighting := true,
-  Compile / doc / sources := {
-    val old = (Compile / doc / sources).value
-    if (isDotty.value)
-      Seq()
+  scalacOptions ++= {
+    if (scalaVersion.value.startsWith("3"))
+      Seq("-Ykind-projector")
     else
-      old
+      compilerOptions
+  },
+  Compile / console / scalacOptions ~= {
+    _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
+  },
+  Test / console / scalacOptions ~= {
+    _.filterNot(Set("-Ywarn-unused-import", "-Ywarn-unused:imports"))
   }
 )
 
@@ -64,14 +61,14 @@ lazy val allSettings = baseSettings ++ publishSettings
 val metaSettings = Seq(crossScalaVersions := Seq(Scala212))
 
 val testSettings = Seq(
-  skip in publish := true,
+  publish / skip := true,
   libraryDependencies ++= {
-    if (isDotty.value)
+    if (scalaVersion.value.startsWith("3"))
       Nil
     else
       Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.11.3").cross(CrossVersion.full)))
   },
-  libraryDependencies += ("org.typelevel" %% "cats-kernel" % "2.6.0").withDottyCompat(scalaVersion.value)
+  libraryDependencies += ("org.typelevel" %% "cats-kernel" % "2.6.0").cross(CrossVersion.for3Use2_13)
 )
 
 lazy val V = _root_.scalafix.sbt.BuildInfo
@@ -105,9 +102,6 @@ lazy val annotation = crossProject(JSPlatform, JVMPlatform)
   .settings(
     moduleName := "simulacrum-scalafix-annotations"
   )
-  .jsSettings(
-    coverageEnabled := false
-  )
 
 lazy val annotationJVM = annotation.jvm
 lazy val annotationJS = annotation.js
@@ -132,16 +126,16 @@ lazy val tests = project
   .settings(allSettings)
   .settings(metaSettings)
   .settings(
-    skip in publish := true,
+    publish / skip := true,
     libraryDependencies += ("ch.epfl.scala" % "scalafix-testkit" % V.scalafixVersion % Test).cross(CrossVersion.full),
-    compile.in(Compile) :=
-      compile.in(Compile).dependsOn(compile.in(input, Compile)).value,
+    Compile / compile :=
+      (Compile / compile).dependsOn(input / Compile / compile).value,
     scalafixTestkitOutputSourceDirectories :=
-      sourceDirectories.in(output, Compile).value,
+      (output / Compile / sourceDirectories).value,
     scalafixTestkitInputSourceDirectories :=
-      sourceDirectories.in(input, Compile).value,
+      (input / Compile / sourceDirectories).value,
     scalafixTestkitInputClasspath :=
-      fullClasspath.in(input, Compile).value
+      (input / Compile / fullClasspath).value
   )
   .dependsOn(rules)
   .enablePlugins(ScalafixTestkitPlugin)
@@ -159,7 +153,7 @@ lazy val publishSettings = Seq(
   homepage := Some(url("https://github.com/typelevel/simulacrum-scalafix")),
   licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   publishMavenStyle := true,
-  publishArtifact in Test := false,
+  Test / publishArtifact := false,
   pomIncludeRepository := { _ =>
     false
   },
