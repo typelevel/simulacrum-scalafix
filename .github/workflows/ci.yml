@@ -52,9 +52,9 @@ jobs:
         run: sbt --client '++${{ matrix.scala }}; githubWorkflowCheck'
 
       - name: Build and test all rules
-        if: matrix.scala == '2.12.13'
+        if: matrix.scala == '2.12.14'
         run: sbt --client '++${{ matrix.scala }}; test'
 
       - name: Build annotations
-        if: matrix.scala != '2.12.13'
+        if: matrix.scala != '2.12.14'
         run: 'sbt --client ''++${{ matrix.scala }}; annotation/test:compile; annotationJS/test:compile'''
