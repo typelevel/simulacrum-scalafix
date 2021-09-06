@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Java and Scala
-        uses: olafurpg/setup-scala@v12
+        uses: olafurpg/setup-scala@v13
         with:
           java-version: ${{ matrix.java }}
 
@@ -49,12 +49,12 @@ jobs:
           key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
 
       - name: Check that workflows are up to date
-        run: sbt --client '++${{ matrix.scala }}; githubWorkflowCheck'
+        run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
       - name: Build and test all rules
         if: matrix.scala == '2.12.14'
-        run: sbt --client '++${{ matrix.scala }}; test'
+        run: sbt ++${{ matrix.scala }} test
 
       - name: Build annotations
         if: matrix.scala != '2.12.14'
-        run: 'sbt --client ''++${{ matrix.scala }}; annotation/test:compile; annotationJS/test:compile'''
+        run: 'sbt ++${{ matrix.scala }} annotation/test:compile annotationJS/test:compile'
