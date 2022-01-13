@@ -24,7 +24,6 @@ jobs:
         os: [ubuntu-latest]
         scala: [2.12.15, 2.13.8, 3.1.0]
         java: [temurin@11]
-
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
