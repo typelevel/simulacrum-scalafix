@@ -1,7 +1,4 @@
-addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.34")
-resolvers += Resolver.sonatypeRepo("snapshots")
-dependencyOverrides += "ch.epfl.scala" % "scalafix-interfaces" % "0.9.34+52-a83785c4-SNAPSHOT"
-
+addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.10.0")
 addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.14.2")
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.1.2")
