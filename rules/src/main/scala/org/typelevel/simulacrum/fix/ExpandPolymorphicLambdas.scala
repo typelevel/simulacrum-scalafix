@@ -34,8 +34,9 @@ class ExpandPolymorphicLambdas extends SyntacticRule("ExpandPolymorphicLambdas")
         case List(Term.Function(List(Term.Param(Nil, name, None, None)), body))     => Some((Some(name), body.toString))
         case List(Term.Block(List(Term.Function(List(Term.Param(Nil, name, None, None)), body)))) =>
           Some((Some(name), s"{\n    $body\n  }"))
-        case List(Term.Apply(method, List(Term.Placeholder()))) => Some((None, s"$method($termParam)"))
-        case List(other) =>
+        case List(Term.AnonymousFunction(Term.Apply(method, List(Term.Placeholder())))) =>
+          Some((None, s"$method($termParam)"))
+        case List(Term.AnonymousFunction(other)) =>
           replacePlaceholder(other, termParam).map(term => (None, term.toString))
         case other => None
       }
