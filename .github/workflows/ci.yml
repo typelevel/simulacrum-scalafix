@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.12.17, 2.13.10, 3.3.0]
+        scala: [2.12.18, 2.13.10, 3.3.0]
         java: [temurin@8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -43,9 +43,9 @@ jobs:
         run: sbt '++ ${{ matrix.scala }}' githubWorkflowCheck
 
       - name: Build and test all rules
-        if: matrix.scala == '2.12.17'
+        if: matrix.scala == '2.12.18'
         run: sbt '++ ${{ matrix.scala }}' test
 
       - name: Build annotations
-        if: matrix.scala != '2.12.17'
+        if: matrix.scala != '2.12.18'
         run: 'sbt ''++ ${{ matrix.scala }}'' annotation/test:compile annotationJS/test:compile'
