@@ -5,7 +5,7 @@ ThisBuild / organization := "org.typelevel"
 
 val Scala212 = "2.12.17"
 
-ThisBuild / crossScalaVersions := Seq(Scala212, "2.13.11", "3.3.0")
+ThisBuild / crossScalaVersions := Seq(Scala212, "2.13.10", "3.3.0")
 ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.head
 
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
