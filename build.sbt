@@ -5,7 +5,7 @@ ThisBuild / organization := "org.typelevel"
 
 val Scala212 = "2.12.17"
 
-ThisBuild / crossScalaVersions := Seq(Scala212, "2.13.10", "3.3.0")
+ThisBuild / crossScalaVersions := Seq(Scala212, "2.13.10", "3.3.1")
 ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.head
 
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
@@ -68,7 +68,7 @@ val testSettings = Seq(
     else
       Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.13.2").cross(CrossVersion.full)))
   },
-  libraryDependencies += "org.typelevel" %% "cats-kernel" % "2.9.0"
+  libraryDependencies += "org.typelevel" %% "cats-kernel" % "2.10.0"
 )
 
 lazy val V = _root_.scalafix.sbt.BuildInfo
