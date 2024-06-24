@@ -3,7 +3,7 @@ import ReleaseTransformations._
 
 ThisBuild / organization := "org.typelevel"
 
-val Scala212 = "2.12.17"
+val Scala212 = "2.12.19"
 
 ThisBuild / crossScalaVersions := Seq(Scala212, "2.13.10", "3.3.3")
 ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.head
