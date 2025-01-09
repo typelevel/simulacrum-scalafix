@@ -17,9 +17,11 @@ ThisBuild / githubWorkflowBuild := Seq(
     cond = Some(s"matrix.scala == '$Scala212'")),
 
   WorkflowStep.Sbt(
-    List("annotation/test:compile", "annotationJS/test:compile"),
+    List("annotation/test:compile", "annotationJS/test:compile", "annotationNative/test:compile"),
     name = Some("Build annotations"),
-    cond = Some(s"matrix.scala != '$Scala212'")))
+    cond = Some(s"matrix.scala != '$Scala212'")
+  )
+)
 
 val compilerOptions = Seq(
   "-deprecation",
@@ -92,9 +94,9 @@ lazy val root = project
       pushChanges
     )
   )
-  .aggregate(annotationJVM, annotationJS, rules, input, output, tests)
+  .aggregate(annotationJVM, annotationJS, annotationNative, rules, input, output, tests)
 
-lazy val annotation = crossProject(JSPlatform, JVMPlatform)
+lazy val annotation = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("annotation"))
@@ -105,6 +107,7 @@ lazy val annotation = crossProject(JSPlatform, JVMPlatform)
 
 lazy val annotationJVM = annotation.jvm
 lazy val annotationJS = annotation.js
+lazy val annotationNative = annotation.native
 
 lazy val rules = project
   .settings(allSettings)
