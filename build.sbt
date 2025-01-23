@@ -68,7 +68,7 @@ val testSettings = Seq(
     else
       Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.13.3").cross(CrossVersion.full)))
   },
-  libraryDependencies += "org.typelevel" %% "cats-kernel" % "2.12.0"
+  libraryDependencies += "org.typelevel" %% "cats-kernel" % "2.13.0"
 )
 
 lazy val V = _root_.scalafix.sbt.BuildInfo
