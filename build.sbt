@@ -66,7 +66,7 @@ val testSettings = Seq(
     if (scalaVersion.value.startsWith("3"))
       Nil
     else
-      Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.13.3").cross(CrossVersion.full)))
+      Seq(compilerPlugin(("org.typelevel" %% "kind-projector" % "0.13.4").cross(CrossVersion.full)))
   },
   libraryDependencies += "org.typelevel" %% "cats-kernel" % "2.13.0"
 )
