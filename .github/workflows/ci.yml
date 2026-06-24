@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -43,12 +43,12 @@ jobs:
         uses: sbt/setup-sbt@v1
 
       - name: Check that workflows are up to date
-        run: sbt '++ ${{ matrix.scala }}' githubWorkflowCheck
+        run: sbt '++ ${{ matrix.scala }}; githubWorkflowCheck'
 
       - name: Build and test all rules
         if: matrix.scala == '2.12.17'
-        run: sbt '++ ${{ matrix.scala }}' test
+        run: sbt '++ ${{ matrix.scala }}; test'
 
       - name: Build annotations
         if: matrix.scala != '2.12.17'
-        run: 'sbt ''++ ${{ matrix.scala }}'' annotation/test:compile annotationJS/test:compile'
+        run: 'sbt ''++ ${{ matrix.scala }}; annotation/test:compile; annotationJS/test:compile'''
